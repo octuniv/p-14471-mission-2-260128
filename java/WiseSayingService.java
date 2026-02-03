@@ -15,6 +15,10 @@ public class WiseSayingService {
         return instance;
     }
 
+    public void build() {
+        this.repository.build();
+    }
+
     public WiseSaying register(String wise, String author) {
         return repository.add(wise, author);
     }
@@ -23,7 +27,7 @@ public class WiseSayingService {
         return this.repository.getAll().reversed();
     }
 
-    public boolean isExistedById(int seq) {
+    public boolean checkById(int seq) {
         return this.repository.isExist(seq);
     }
 

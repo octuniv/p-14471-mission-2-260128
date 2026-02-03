@@ -27,7 +27,7 @@ public class WiseSayingController {
         System.out.print("작가 : ");
         author = sc.nextLine();
         WiseSaying newItem = this.service.register(wise, author);
-        System.out.println(newItem.getSeq() + "번 명언이 등록되었습니다.");
+        System.out.println(newItem.getId() + "번 명언이 등록되었습니다.");
     }
 
     public void inquiry() {
@@ -40,7 +40,7 @@ public class WiseSayingController {
     }
 
     public void remove(int seq) {
-        if (!this.service.isExistedById(seq)) {
+        if (!this.service.checkById(seq)) {
             System.out.println(seq + "번 명언은 존재하지 않습니다.");
             return;
         }
@@ -51,7 +51,7 @@ public class WiseSayingController {
     }
 
     public void amend(int seq) {
-        if (!this.service.isExistedById(seq)) {
+        if (!this.service.checkById(seq)) {
             System.out.println(seq + "번 명언은 존재하지 않습니다.");
             return;
         }
@@ -67,5 +67,10 @@ public class WiseSayingController {
 
         boolean result = this.service.amend(seq, wise, author);
         if (!result) System.out.println("수정 중 오류");
+    }
+
+    public void build() {
+        this.service.build();
+        System.out.println("data.json 파일의 내용이 갱신되었습니다.");
     }
 }

@@ -1,16 +1,20 @@
 public class WiseSaying {
-    int seq;
-    String wise;
-    String author;
-    boolean deleted;
-    static int nextSeq = 1;
+    private int id;
+    private String wise;
+    private String author;
+    private boolean deleted;
+    private static int nextId = 1;
 
     public WiseSaying(String wise, String author) {
-        this.seq= nextSeq;
+        this.id = nextId;
         this.wise = wise;
         this.author = author;
         this.deleted = false;
-        nextSeq++;
+        nextId++;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setWise(String wise) {
@@ -24,9 +28,14 @@ public class WiseSaying {
     public void setDeleted() {
         this.deleted = true;
     }
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 
-    public int getSeq() {
-        return this.seq;
+    public static void undoNextId() { nextId--; }
+
+    public int getId() {
+        return this.id;
     }
 
     public String getWise() {
@@ -41,15 +50,15 @@ public class WiseSaying {
         return this.deleted;
     }
 
-    public static int getNextSeq() {
-        return nextSeq;
+    public static int getNextId() {
+        return nextId;
     }
 
     public String toString() {
         if (this.deleted) {
-            return this.seq + "번 명언은 존재하지 않습니다.";
+            return this.id + "번 명언은 존재하지 않습니다.";
         }
-        return this.seq +
+        return this.id +
                 " / " +
                 this.author +
                 " / " +

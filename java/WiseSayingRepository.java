@@ -1,12 +1,15 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WiseSayingRepository {
     private static WiseSayingRepository instance;
+    private final WiseSayingToJsonAdapter adapter;
     private final List<WiseSaying> wisesList;
 
     private WiseSayingRepository() {
-        this.wisesList = new ArrayList<>();
+        this.adapter = WiseSayingToJsonAdapter.getInstance();
+        this.wisesList = this.adapter.readFromFile();
     }
 
     public static WiseSayingRepository getInstance() {
@@ -16,9 +19,19 @@ public class WiseSayingRepository {
         return instance;
     }
 
+    public void build() {
+        try {
+            this.adapter.writeToFile(this.wisesList);
+        } catch (IOException e) {
+            e.printStackTrace();
+//            System.exit(-1);
+        }
+    }
+
     public WiseSaying add(String wise, String author) {
         WiseSaying wiseItem = new WiseSaying(wise, author);
         this.wisesList.add(wiseItem);
+        this.build();
         return wiseItem;
     }
 
@@ -37,6 +50,7 @@ public class WiseSayingRepository {
         }
 
         this.get(seq).setDeleted();
+        this.build();
         return true;
     }
 
@@ -48,6 +62,7 @@ public class WiseSayingRepository {
         WiseSaying p = this.get(seq);
         p.setWise(wise);
         p.setAuthor(author);
+        this.build();
         return true;
     }
 

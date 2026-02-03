@@ -36,6 +36,11 @@ public class App {
                 continue;
             }
 
+            if (cmd.equals("빌드")) {
+                this.controller.build();
+                continue;
+            }
+
             if (cmd.matches(removePattern)) {
                 int seq = Integer.parseInt(cmd.replaceAll("\\D", ""));
                 this.controller.remove(seq);
