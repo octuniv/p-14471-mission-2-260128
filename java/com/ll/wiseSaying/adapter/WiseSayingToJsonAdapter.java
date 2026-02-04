@@ -1,3 +1,7 @@
+package com.ll.wiseSaying.adapter;
+
+import com.ll.wiseSaying.entity.WiseSaying;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

@@ -1,3 +1,9 @@
+package com.ll.wiseSaying.controller;
+
+import com.ll.wiseSaying.entity.WiseSaying;
+import com.ll.wiseSaying.WiseSayingRequester;
+import com.ll.wiseSaying.service.WiseSayingService;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,31 +38,41 @@ public class WiseSayingController {
 
     public void inquiry() {
         List<WiseSaying> wiseItems = this.service.getAllReversed();
-        System.out.println("번호 / 작가 / 명언");
+        System.out.println("번호 / 작가 / 명언 / 작성일 / 수정일");
         System.out.println("----------------------");
         for (WiseSaying w : wiseItems) {
             System.out.println(w);
         }
     }
 
-    public void remove(int seq) {
-        if (!this.service.checkById(seq)) {
-            System.out.println(seq + "번 명언은 존재하지 않습니다.");
+    public void remove(WiseSayingRequester rq) {
+        int id = rq.getParamAsInt("id", -1);
+        if(id == -1) {
+            System.out.println("id를 제대로 입력해주세요.");
+            return;
+        }
+        if (!this.service.checkById(id)) {
+            System.out.println(id + "번 명언은 존재하지 않습니다.");
             return;
         }
 
-        boolean result = this.service.remove(seq);
-        if (result) System.out.println(seq + "번 명언이 삭제되었습니다.");
-        else System.out.println("삭제 중 오류");
+        boolean result = this.service.remove(id);
+        if (result) System.out.println(id + "번 명언이 삭제되었습니다.");
+        else System.out.println(id + "번 명언이 삭제 중 오류 발생");
     }
 
-    public void amend(int seq) {
-        if (!this.service.checkById(seq)) {
-            System.out.println(seq + "번 명언은 존재하지 않습니다.");
+    public void amend(WiseSayingRequester rq) {
+        int id = rq.getParamAsInt("id", -1);
+        if(id == -1) {
+            System.out.println("id를 제대로 입력해주세요.");
+            return;
+        }
+        if (!this.service.checkById(id)) {
+            System.out.println(id + "번 명언은 존재하지 않습니다.");
             return;
         }
 
-        WiseSaying amendItem = this.service.getItem(seq);
+        WiseSaying amendItem = this.service.getItem(id);
 
         System.out.println("명언(기존) : " + amendItem.getWise());
         System.out.print("명언 : ");
@@ -65,7 +81,7 @@ public class WiseSayingController {
         System.out.print("작가 : ");
         author = sc.nextLine();
 
-        boolean result = this.service.amend(seq, wise, author);
+        boolean result = this.service.amend(id, wise, author);
         if (!result) System.out.println("수정 중 오류");
     }
 

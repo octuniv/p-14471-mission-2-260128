@@ -1,4 +1,10 @@
+package com.ll.wiseSaying.repository;
+
+import com.ll.wiseSaying.adapter.WiseSayingToJsonAdapter;
+import com.ll.wiseSaying.entity.WiseSaying;
+
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +68,7 @@ public class WiseSayingRepository {
         WiseSaying p = this.get(seq);
         p.setWise(wise);
         p.setAuthor(author);
+        p.setModifyDate(LocalDateTime.now());
         this.build();
         return true;
     }
