@@ -1,6 +1,5 @@
 import com.ll.App;
 import com.ll.storage.MemoryWiseSayingStorage;
-import com.ll.wiseSaying.repository.WiseSayingRepository;
 import global.TestAppContext;
 import global.TestInputReader;
 import global.TestOutputWriter;
@@ -16,7 +15,6 @@ public class AppTest {
     @Test
     @DisplayName("10단계 프롬프트 테스트")
     void t1() {
-        MemoryWiseSayingStorage storage = new MemoryWiseSayingStorage();
         TestInputReader input = new TestInputReader(
                 "등록", "현재를 사랑하라.", "작자미상",
                 "등록", "과거에 집착하지 마라.", "작자미상",
@@ -31,9 +29,6 @@ public class AppTest {
                 "종료"
         );
         TestOutputWriter output = new TestOutputWriter();
-
-        WiseSayingRepository.resetForTesting(storage);
-        App.resetForTesting();
 
         try (var _ = new TestAppContext(input, output)) {
             App.getInstance(input, output).run(); // 실제 앱 실행

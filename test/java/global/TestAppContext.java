@@ -3,11 +3,15 @@ package global;
 import com.ll.App;
 import com.ll.global.InputReader;
 import com.ll.global.OutputWriter;
+import com.ll.storage.MemoryWiseSayingStorage;
 import com.ll.wiseSaying.controller.WiseSayingController;
+import com.ll.wiseSaying.repository.WiseSayingRepository;
 
 public class TestAppContext implements AutoCloseable {
     public TestAppContext(InputReader reader, OutputWriter writer) {
-        // 테스트 시작 시 싱글턴 강제 초기화
+        // 테스트 시작 시 싱글턴 강제 초기화 및 파일 어댑터 의존성 변경
+        MemoryWiseSayingStorage storage = new MemoryWiseSayingStorage();
+        WiseSayingRepository.resetForTesting(storage);
         App.resetForTesting();
         WiseSayingController.resetForTesting();
 
