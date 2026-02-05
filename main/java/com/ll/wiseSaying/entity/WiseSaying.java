@@ -54,6 +54,8 @@ public class WiseSaying {
 
     public static void undoNextId() { nextId--; }
 
+    public static void setClear() { nextId = 1;}
+
     public int getId() {
         return this.id;
     }

@@ -47,4 +47,8 @@ public class WiseSayingService {
     public boolean amend(int seq, String wise, String author) {
         return this.repository.amend(seq, wise, author);
     }
+
+    public void clear() {
+        this.repository.clear();
+    }
 }

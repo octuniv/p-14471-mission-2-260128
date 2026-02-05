@@ -1,4 +1,4 @@
-package com.ll.wiseSaying;
+package com.ll.global;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -17,7 +17,7 @@ public class WiseSayingRequester {
                 .collect(Collectors.toMap(bits -> bits[0], bits -> bits[1]));
     }
 
-    public String getAction() {
+    public String getActionName() {
         return action;
     }
 

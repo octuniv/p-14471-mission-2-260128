@@ -1,21 +1,31 @@
 package com.ll.wiseSaying.repository;
 
-import com.ll.wiseSaying.adapter.WiseSayingToJsonAdapter;
 import com.ll.wiseSaying.entity.WiseSaying;
+import com.ll.wiseSaying.storage.FileWiseSayingStorage;
+import com.ll.wiseSaying.storage.WiseSayingStorage;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WiseSayingRepository {
     private static WiseSayingRepository instance;
-    private final WiseSayingToJsonAdapter adapter;
+//    private final WiseSayingToJsonAdapter adapter;
+    private final WiseSayingStorage storage;
     private final List<WiseSaying> wisesList;
 
+    // 기본 생성자 (프로덕션)
     private WiseSayingRepository() {
-        this.adapter = WiseSayingToJsonAdapter.getInstance();
-        this.wisesList = this.adapter.readFromFile();
+//        this.adapter = WiseSayingToJsonAdapter.getInstance();
+//        this.wisesList = this.adapter.readFromFile();
+        this.storage = new FileWiseSayingStorage();
+        this.wisesList = this.storage.loadAll();
+    }
+
+    // 테스트용 생성자
+    private WiseSayingRepository(WiseSayingStorage storage) {
+        this.storage = storage;
+        this.wisesList = storage.loadAll();
     }
 
     public static WiseSayingRepository getInstance() {
@@ -25,13 +35,13 @@ public class WiseSayingRepository {
         return instance;
     }
 
+    // 테스트 전용: 싱글턴 재초기화 + 메모리 스토리지 주입
+    public static void resetForTesting(WiseSayingStorage storage) {
+        instance = new WiseSayingRepository(storage);
+    }
+
     public void build() {
-        try {
-            this.adapter.writeToFile(this.wisesList);
-        } catch (IOException e) {
-            e.printStackTrace();
-//            System.exit(-1);
-        }
+        this.storage.saveAll(this.wisesList);
     }
 
     public WiseSaying add(String wise, String author) {
@@ -82,5 +92,9 @@ public class WiseSayingRepository {
         return this.wisesList.get(seq - 1);
     }
 
-
+    public void clear() {
+        this.wisesList.clear();
+        WiseSaying.setClear();
+        this.build();
+    }
 }

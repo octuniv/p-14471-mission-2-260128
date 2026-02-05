@@ -1,4 +1,4 @@
-package com.ll.wiseSaying.adapter;
+package com.ll.wiseSaying.storage;
 
 import com.ll.wiseSaying.entity.WiseSaying;
 
@@ -44,23 +44,27 @@ public class WiseSayingToJsonAdapter {
         return instance;
     }
 
-    public void writeToFile(List<WiseSaying> wiseList) throws IOException {
+    public void writeToFile(List<WiseSaying> wiseList) {
         String saved = wiseListToStringJSON(wiseList);
 
-        File file = new File(filePath);
-        if (file.exists()) {
-            boolean result = file.delete();
-            if (!result) throw new IOException("삭제가 정상적으로 이루어지지않음.");
+        try {
+            File file = new File(filePath);
+            if (file.exists()) {
+                file.delete();
+            }
+
+            if (wiseList.isEmpty()) {
+                return;
+            }
+
+            BufferedWriter fw = new BufferedWriter(new FileWriter((filePath)));
+            fw.write(saved);
+            fw.flush();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        if (wiseList.isEmpty()) {
-            return;
-        }
-
-        BufferedWriter fw = new BufferedWriter(new FileWriter((filePath)));
-        fw.write(saved);
-        fw.flush();
-        fw.close();
     }
 
     private String wiseListToStringJSON(List<WiseSaying> wiseList) {

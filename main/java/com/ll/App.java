@@ -1,37 +1,44 @@
 package com.ll;
 
+import com.ll.global.InputReader;
+import com.ll.global.OutputWriter;
+import com.ll.global.WiseSayingRequester;
 import com.ll.wiseSaying.controller.WiseSayingController;
-import com.ll.wiseSaying.WiseSayingRequester;
-
-import java.util.Scanner;
 
 public class App {
     private static App instance;
     private final WiseSayingController controller;
+    private final InputReader reader;
+    private final OutputWriter writer;
 
-    private App() {
-        controller = WiseSayingController.getInstance();
+    private App(InputReader reader, OutputWriter writer) {
+        controller = WiseSayingController.getInstance(reader, writer);
+        this.reader = reader;
+        this.writer = writer;
     }
 
-    public static App getInstance() {
+    public static App getInstance(InputReader reader, OutputWriter writer) {
         if (instance == null) {
-            instance = new App();
+            instance = new App(reader, writer);
         }
 
         return instance;
     }
 
-    public void execute() {
-        Scanner sc = new Scanner(System.in);
+    // 테스트 전용: 인스턴스 강제 초기화
+    public static void resetForTesting() {
+        instance = null;
+    }
 
-        System.out.println("== 명언 앱 ==");
+    public void run() {
+        writer.println("== 명언 앱 ==");
 
         while (true) {
-            System.out.print("명령) ");
-            String cmd = sc.nextLine();
+            writer.print("명령) ");
+            String cmd = reader.readLine();
 
             WiseSayingRequester rq = new WiseSayingRequester(cmd);
-            String action = rq.getAction();
+            String action = rq.getActionName();
 
             switch (action) {
                 case "등록":
